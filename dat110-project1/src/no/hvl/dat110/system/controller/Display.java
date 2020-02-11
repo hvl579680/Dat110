@@ -11,7 +11,10 @@ public class Display extends RPCStub {
 
 		// TODO
 		// implement marshalling, call and unmarshalling for write RPC method
+		byte[] byteMarsh = RPCUtils.marshallString(RPCID, message);
+		rpcclient.call(byteMarsh);
+		RPCUtils.unmarshallString(byteMarsh);
 
-		throw new UnsupportedOperationException(TODO.method());
+//		throw new UnsupportedOperationException(TODO.method());
 	}
 }

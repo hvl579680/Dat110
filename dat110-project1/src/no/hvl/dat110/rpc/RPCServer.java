@@ -37,7 +37,7 @@ public class RPCServer {
 		
 		while (!stop) {
 	    
-		   int rpcid;
+		   
 		   
 		   // TODO
 		   // - receive message containing RPC request
@@ -45,10 +45,22 @@ public class RPCServer {
 		   // - lookup the method to be invoked
 		   // - invoke the method
 		   // - send back message containing RPC reply
-			
-		   if (true) {
-			   throw new UnsupportedOperationException(TODO.method());
+		
+		   Message msg = connection.receive();
+		   byte[] byteRecieved = msg.getData(); 
+		   int rpcid = byteRecieved[0];
+		   RPCImpl impl = services.get(rpcid);
+		   byte[] byteToSend = impl.invoke(byteRecieved);
+		   msg = new Message(byteToSend);
+		   connection.send(msg);
+		   
+		   if (rpcid == RPCCommon.RPIDSTOP) {
+			   stop = true;
 		   }
+		   
+//		   if (true) {
+//			   throw new UnsupportedOperationException(TODO.method());
+//		   }
 		   
 		   if (rpcid == RPCCommon.RPIDSTOP) {
 			   stop = true;

@@ -22,15 +22,20 @@ public class Controller  {
 		
 		displayclient = new RPCClient(Common.DISPLAYHOST,Common.DISPLAYPORT);
 		sensorclient = new RPCClient(Common.SENSORHOST,Common.SENSORPORT);
-		
+		displayclient.connect();
+		sensorclient.connect();
 		// TODO
 		// connect to sensor and display RPC servers
 		// create local display and sensor objects
 		// register display and sensor objects in the RPC layer
+		sensor = new Sensor();
+		display = new Display();
+		sensor.register(sensorclient);
+		display.register(displayclient);
 		
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
+//		if (true) {
+//			throw new UnsupportedOperationException(TODO.method());
+//		}
 		
 		// register stop methods in the RPC layer
 		displayclient.register(stopdisplay);
@@ -38,10 +43,21 @@ public class Controller  {
 		
 		// TODO:
 		// loop while reading from sensor and write to display via RPC
-		
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		for(int i = 0; i < N; i++) {
+			int temp = sensor.read();
+			display.write(temp + " grader");
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
+		
+//		if (true) {
+//			throw new UnsupportedOperationException(TODO.method());
+//			}
 		
 		stopdisplay.stop();
 		stopsensor.stop();
